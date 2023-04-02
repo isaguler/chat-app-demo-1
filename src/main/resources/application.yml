@@ -1,0 +1,15 @@
+server:
+  port: 8321
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:messagedb
+
+springdoc:
+  swagger-ui:
+    path: "/api-docs"

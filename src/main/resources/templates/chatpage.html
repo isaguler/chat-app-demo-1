@@ -1,11 +1,12 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Chat WebSocket</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
     <script type="text/javascript">
-        var stompClient = null;
-        var baseAddress = 'http://localhost:8321';
+        let stompClient = null;
+        const baseAddress = 'http://localhost:8321';
 
         function setConnected(connected) {
             document.getElementById('connect').disabled = connected;
@@ -15,7 +16,7 @@
         }
 
         function connect() {
-            var socket = new SockJS(baseAddress + '/chat');
+            const socket = new SockJS(baseAddress + '/chat');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
@@ -35,18 +36,19 @@
         }
 
         function sendMessage() {
-            var from = document.getElementById('from').value;
-            var text = document.getElementById('text').value;
+            const from = document.getElementById('from').value;
+            const text = document.getElementById('text').value;
             //var time = document.getElementById('time').value;
             stompClient.send("/chat", {},
                 JSON.stringify({'sender':from, 'content':text}));
         }
 
         function handleReceivedMessage(message) {
-            var response = document.getElementById('response');
-            var p = document.createElement('p');
-            p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(message.sender + ": " + message.content + ": " + message.timestamp ));
+            const response = document.getElementById('response');
+            const p = document.createElement('p');
+            let now = new Date();
+            p.style.overflowWrap = 'break-word';
+            p.appendChild(document.createTextNode(message.sender + ": " + message.content + ": " + now));
             response.appendChild(p);
         }
     </script>
@@ -54,6 +56,7 @@
 <body onload="disconnect()">
 <div>
     <div>
+        <label for="from">Enter Your Username</label><br>
         <input type="text" id="from" placeholder="Username"/>
     </div>
     <br />
@@ -65,6 +68,7 @@
     </div>
     <br />
     <div id="conversationDiv">
+        <label for="text">Enter Your Message</label><br>
         <input type="text" id="text" placeholder="Message.."/>
         <button id="sendMessage" onclick="sendMessage();">Send</button>
         <p id="response"></p>
